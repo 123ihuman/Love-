@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Velvet — Premium Adult Portal</title>
+<style>
+  :root {
+    --bg: #070707;
+    --bg-elevated: #111111;
+    --card: rgba(22, 22, 26, 0.72);
+    --card-hover: rgba(32, 32, 40, 0.88);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #f5f5f7;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --accent: #ff2d55;
+    --accent-soft: rgba(255, 45, 85, 0.18);
+    --accent-2: #c026d3;
+    --success: #22c55e;
+    --radius: 18px;
+    --radius-sm: 12px;
+    --shadow: 0 12px 40px rgba(0,0,0,0.45);
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(192, 38, 211, 0.12), transparent 60%),
+      radial-gradient(900px 500px at 90% 0%, rgba(255, 45, 85, 0.10), transparent 55%),
+      var(--bg);
+  }
+
+  /* ========== AGE GATE ========== */
+  #age-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  #age-gate.hidden { display: none; }
+
+  .age-card {
+    width: 100%;
+    max-width: 380px;
+    background: linear-gradient(160deg, #16161a 0%, #0c0c0e 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 28px;
+    padding: 40px 28px 32px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+
+  .age-emoji {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 8px 20px rgba(255,45,85,0.35));
+  }
+
+  .age-card h1 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+  }
+
+  .age-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  .age-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 52px;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ff2d55, #e11d48);
+    color: white;
+    box-shadow: 0 8px 24px rgba(255, 45, 85, 0.35);
+  }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+
+  /* ========== APP SHELL ========== */
+  .app {
+    min-height: 100%;
+    padding-bottom: 40px;
+  }
+
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(7, 7, 7, 0.78);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 18px 12px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #ff2d55, #c026d3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 14px rgba(255,45,85,0.4);
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    background: linear-gradient(90deg, #fff, #e4e4e7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    height: 46px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0 16px 0 44px;
+    color: var(--text);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .search-wrap input::placeholder { color: var(--text-muted); }
+
+  .search-wrap input:focus {
+    border-color: rgba(255,45,85,0.45);
+    background: rgba(255,255,255,0.09);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* Categories */
+  .cats {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 14px 18px 6px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .cats::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    flex-shrink: 0;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .cat-pill.active {
+    background: linear-gradient(135deg, rgba(255,45,85,0.25), rgba(192,38,211,0.2));
+    border-color: rgba(255,45,85,0.45);
+    color: #fff;
+  }
+
+  /* Hero strip */
+  .hero {
+    padding: 22px 18px 8px;
+  }
+
+  .hero h2 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+  }
+
+  .hero p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+    padding: 16px 18px 30px;
+  }
+
+  @media (min-width: 600px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+  }
+
+  /* Site Card */
+  .site-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.22s,
+                border-color 0.22s,
+                box-shadow 0.22s;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .site-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, rgba(255,45,85,0.08), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+
+  .site-card:active {
+    transform: scale(0.96);
+  }
+
+  .site-card:hover, .site-card:focus-visible {
+    background: var(--card-hover);
+    border-color: rgba(255,45,85,0.35);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,45,85,0.15);
+  }
+
+  .site-card:hover::before { opacity: 1; }
+
+  .site-emoji {
+    font-size: 38px;
+    line-height: 1;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-card:hover .site-emoji {
+    transform: scale(1.12) translateY(-2px);
+  }
+
+  .site-name {
+    font-size: 0.98rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    color: #fff;
+  }
+
+  .site-tag {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    line-height: 1.3;
+    min-height: 2.4em;
+  }
+
+  .site-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.45);
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .site-badge.live {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+  }
+
+  .site-badge.hd {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+  }
+
+  .fav-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.35);
+    color: var(--text-muted);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .fav-btn.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .open-btn {
+    width: 100%;
+    height: 38px;
+    border-radius: 11px;
+    border: none;
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .site-card:hover .open-btn {
+    background: linear-gradient(135deg, #ff2d55, #e11d48);
+  }
+
+  /* Empty state */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty span { font-size: 48px; display: block; margin-bottom: 12px; }
+
+  /* Footer note */
+  .footer-note {
+    text-align: center;
+    padding: 10px 24px 30px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Animation */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .site-card {
+    animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Safe area for notched phones */
+  @supports (padding: max(0px)) {
+    header { padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
+    .grid, .cats, .hero { padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
+  }
+</style>
+</head>
+<body>
+
+<!-- AGE GATE -->
+<div id="age-gate">
+  <div class="age-card">
+    <div class="age-emoji">🔞</div>
+    <h1>Adults Only</h1>
+    <p>This portal links to adult websites intended for viewers 18 years or older. By continuing you confirm you are of legal age in your jurisdiction.</p>
+    <div class="age-btns">
+      <button class="btn btn-primary" id="age-yes">I am 18 or older — Enter</button>
+      <button class="btn btn-ghost" id="age-no">Exit</button>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="app" style="display:none;">
+  <header>
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-mark">🔥</div>
+        <div class="logo-text">Velvet</div>
+      </div>
+      <div class="header-badge">35 SITES</div>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="search" placeholder="Search sites…" autocomplete="off" enterkeyhint="search">
+    </div>
+  </header>
+
+  <div class="cats" id="cats">
+    <button class="cat-pill active" data-cat="all">All</button>
+    <button class="cat-pill" data-cat="tubes">Free Tubes</button>
+    <button class="cat-pill" data-cat="live">Live Cams</button>
+    <button class="cat-pill" data-cat="hd">HD / 4K</button>
+    <button class="cat-pill" data-cat="fav">♥ Favorites</button>
+  </div>
+
+  <div class="hero">
+    <h2>Discover</h2>
+    <p>Tap any site to open it officially inside the app</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer-note">
+    Official links only • Opens real websites • Not affiliated with any listed site<br>
+    Use responsibly • 18+ • Local laws apply
+  </div>
+</div>
+
+<script>
+  // ========== DATA ==========
+  const SITES = [
+    // Free Tubes
+    { id: "pornhub", name: "Pornhub", url: "https://www.pornhub.com", emoji: "🔥", tag: "World’s largest free tube", cat: ["tubes", "hd"], badge: "Popular" },
+    { id: "xvideos", name: "XVideos", url: "https://www.xvideos.com", emoji: "📹", tag: "Massive free library", cat: ["tubes"], badge: "Huge" },
+    { id: "xhamster", name: "xHamster", url: "https://xhamster.com", emoji: "🐹", tag: "Community + videos", cat: ["tubes"], badge: "India fav" },
+    { id: "xnxx", name: "XNXX", url: "https://www.xnxx.com", emoji: "🖤", tag: "Classic deep catalog", cat: ["tubes"], badge: null },
+    { id: "spankbang", name: "SpankBang", url: "https://spankbang.com", emoji: "💥", tag: "Fast HD streaming", cat: ["tubes", "hd"], badge: "HD" },
+    { id: "eporner", name: "Eporner", url: "https://www.eporner.com", emoji: "🎬", tag: "4K & full scenes", cat: ["tubes", "hd"], badge: "4K" },
+    { id: "youporn", name: "YouPorn", url: "https://www.youporn.com", emoji: "▶️", tag: "Clean mainstream tube", cat: ["tubes"], badge: null },
+    { id: "redtube", name: "RedTube", url: "https://www.redtube.com", emoji: "🔴", tag: "Aylo network tube", cat: ["tubes"], badge: null },
+    { id: "hqporner", name: "HQporner", url: "https://hqporner.com", emoji: "✨", tag: "High quality free", cat: ["tubes", "hd"], badge: "HQ" },
+    { id: "beeg", name: "Beeg", url: "https://beeg.com", emoji: "🐝", tag: "Minimal free tube", cat: ["tubes"], badge: null },
+    { id: "porntrex", name: "PornTrex", url: "https://www.porntrex.com", emoji: "📦", tag: "Full videos free", cat: ["tubes", "hd"], badge: null },
+    { id: "tnaflix", name: "TNAFlix", url: "https://www.tnaflix.com", emoji: "🎞️", tag: "Long-running tube", cat: ["tubes"], badge: null },
+    { id: "youjizz", name: "YouJizz", url: "https://www.youjizz.com", emoji: "💦", tag: "Classic free tube", cat: ["tubes"], badge: null },
+    { id: "tube8", name: "Tube8", url: "https://www.tube8.com", emoji: "8️⃣", tag: "Aylo free tube", cat: ["tubes"], badge: null },
+    { id: "sxyprn", name: "SxyPrn", url: "https://sxyprn.com", emoji: "🌶️", tag: "Full length free", cat: ["tubes"], badge: null },
+    { id: "ixxx", name: "iXXX", url: "https://www.ixxx.com", emoji: "🔗", tag: "Meta tube search", cat: ["tubes"], badge: null },
+    { id: "thisvid", name: "ThisVid", url: "https://thisvid.com", emoji: "📌", tag: "User uploads", cat: ["tubes"], badge: null },
+    { id: "erome", name: "Erome", url: "https://www.erome.com", emoji: "📸", tag: "Albums & videos", cat: ["tubes"], badge: null },
+    { id: "motherless", name: "Motherless", url: "https://motherless.com", emoji: "🌑", tag: "Uncensored community", cat: ["tubes"], badge: null },
+    { id: "pornhat", name: "PornHat", url: "https://www.pornhat.com", emoji: "🎩", tag: "Clean free tube", cat: ["tubes", "hd"], badge: null },
+
+    // Live Cams
+    { id: "chaturbate", name: "Chaturbate", url: "https://chaturbate.com", emoji: "🎥", tag: "Free interactive cams", cat: ["live"], badge: "Live" },
+    { id: "stripchat", name: "Stripchat", url: "https://stripchat.com", emoji: "💃", tag: "HD live shows", cat: ["live"], badge: "Live" },
+    { id: "bongacams", name: "BongaCams", url: "https://bongacams.com", emoji: "🌴", tag: "Free live models", cat: ["live"], badge: "Live" },
+    { id: "camsoda", name: "CamSoda", url: "https://www.camsoda.com", emoji: "🥤", tag: "Interactive free cams", cat: ["live"], badge: "Live" },
+    { id: "myfreecams", name: "MyFreeCams", url: "https://www.myfreecams.com", emoji: "🆓", tag: "Classic free cams", cat: ["live"], badge: "Live" },
+    { id: "jerkmate", name: "Jerkmate", url: "https://jerkmate.com", emoji: "🎯", tag: "Free live + games", cat: ["live"], badge: "Live" },
+    { id: "cam4", name: "CAM4", url: "https://www.cam4.com", emoji: "4️⃣", tag: "Amateur live cams", cat: ["live"], badge: "Live" },
+    { id: "livejasmin", name: "LiveJasmin", url: "https://www.livejasmin.com", emoji: "💎", tag: "Premium live models", cat: ["live"], badge: "Live" },
+
+    // Extra popular / niche
+    { id: "nhentai", name: "nHentai", url: "https://nhentai.net", emoji: "📖", tag: "Hentai comics", cat: ["tubes"], badge: "Hentai" },
+    { id: "rule34", name: "Rule34", url: "https://rule34.xxx", emoji: "🎨", tag: "Fan art & more", cat: ["tubes"], badge: null },
+    { id: "vixen", name: "Vixen", url: "https://www.vixen.com", emoji: "🦊", tag: "Premium studio site", cat: ["hd"], badge: "Studio" },
+    { id: "xvideos-red", name: "XVideos RED", url: "https://www.xvideos.red", emoji: "❤️", tag: "Premium of XVideos", cat: ["hd"], badge: "Premium" },
+    { id: "pornhub-premium", name: "Pornhub Premium", url: "https://www.pornhubpremium.com", emoji: "⭐", tag: "Ad-free premium", cat: ["hd"], badge: "Premium" },
+    { id: "brazzers", name: "Brazzers", url: "https://www.brazzers.com", emoji: "💋", tag: "Famous studio", cat: ["hd"], badge: "Studio" },
+    { id: "bangbros", name: "BangBros", url: "https://www.bangbros.com", emoji: "🍌", tag: "Classic studio", cat: ["hd"], badge: "Studio" }
+  ];
+
+  // ========== STATE ==========
+  let currentCat = "all";
+  let searchQuery = "";
+  let favorites = JSON.parse(localStorage.getItem("velvet_favs") || "[]");
+
+  // ========== AGE GATE ==========
+  const ageGate = document.getElementById("age-gate");
+  const app = document.getElementById("app");
+
+  if (localStorage.getItem("velvet_age") === "1") {
+    ageGate.classList.add("hidden");
+    app.style.display = "block";
+  }
+
+  document.getElementById("age-yes").addEventListener("click", () => {
+    localStorage.setItem("velvet_age", "1");
+    ageGate.classList.add("hidden");
+    app.style.display = "block";
+    render();
+  });
+
+  document.getElementById("age-no").addEventListener("click", () => {
+    window.location.href = "about:blank";
+  });
+
+  // ========== RENDER ==========
+  const grid = document.getElementById("grid");
+
+  function render() {
+    let list = SITES.slice();
+
+    if (currentCat === "fav") {
+      list = list.filter(s => favorites.includes(s.id));
+    } else if (currentCat !== "all") {
+      list = list.filter(s => s.cat.includes(currentCat));
+    }
+
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(s =>
+        s.name.toLowerCase().includes(q) ||
+        s.tag.toLowerCase().includes(q)
+      );
+    }
+
+    if (list.length === 0) {
+      grid.innerHTML = `<div class="empty"><span>🔍</span>No sites match your filters</div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map((s, i) => {
+      const isFav = favorites.includes(s.id);
+      let badgeHtml = "";
+      if (s.badge === "Live") badgeHtml = `<span class="site-badge live">LIVE</span>`;
+      else if (s.badge === "4K" || s.badge === "HD" || s.badge === "HQ") badgeHtml = `<span class="site-badge hd">${s.badge}</span>`;
+      else if (s.badge) badgeHtml = `<span class="site-badge">${s.badge}</span>`;
+
+      return `
+        <article class="site-card" style="animation-delay:${Math.min(i * 0.03, 0.4)}s" data-id="${s.id}" data-url="${s.url}">
+          ${badgeHtml}
+          <button class="fav-btn ${isFav ? "active" : ""}" data-fav="${s.id}" aria-label="Favorite">♥</button>
+          <div class="site-emoji">${s.emoji}</div>
+          <div class="site-name">${s.name}</div>
+          <div class="site-tag">${s.tag}</div>
+          <button class="open-btn">Open ↗</button>
+        </article>
+      `;
+    }).join("");
+  }
+
+  // ========== EVENTS ==========
+  // Category pills
+  document.getElementById("cats").addEventListener("click", (e) => {
+    const pill = e.target.closest(".cat-pill");
+    if (!pill) return;
+    document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+    currentCat = pill.dataset.cat;
+    render();
+  });
+
+  // Search
+  let searchTimer;
+  document.getElementById("search").addEventListener("input", (e) => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      searchQuery = e.target.value.trim();
+      render();
+    }, 120);
+  });
+
+  // Card clicks + favorites (event delegation)
+  grid.addEventListener("click", (e) => {
+    const favBtn = e.target.closest(".fav-btn");
+    if (favBtn) {
+      e.stopPropagation();
+      const id = favBtn.dataset.fav;
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(f => f !== id);
+      } else {
+        favorites.push(id);
+      }
+      localStorage.setItem("velvet_favs", JSON.stringify(favorites));
+      render();
+      return;
+    }
+
+    const card = e.target.closest(".site-card");
+    if (card) {
+      const url = card.dataset.url;
+      // Opens official site inside the WebView / current context
+      window.location.href = url;
+    }
+  });
+
+  // Initial render if already aged
+  if (localStorage.getItem("velvet_age") === "1") {
+    render();
+  }
+</script>
+</body>
+</html>
