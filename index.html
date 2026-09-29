@@ -484,7 +484,7 @@
     <div class="header-top">
       <div class="logo">
         <div class="logo-mark">🔥</div>
-        <div class="logo-text">Velvet</div>
+        <div class="logo-text">लव+</div>
       </div>
       <div class="header-badge">35 SITES</div>
     </div>
@@ -563,19 +563,19 @@
   // ========== STATE ==========
   let currentCat = "all";
   let searchQuery = "";
-  let favorites = JSON.parse(localStorage.getItem("velvet_favs") || "[]");
+  let favorites = JSON.parse(localStorage.getItem("लव+_favs") || "[]");
 
   // ========== AGE GATE ==========
   const ageGate = document.getElementById("age-gate");
   const app = document.getElementById("app");
 
-  if (localStorage.getItem("velvet_age") === "1") {
+  if (localStorage.getItem("लव+_age") === "1") {
     ageGate.classList.add("hidden");
     app.style.display = "block";
   }
 
   document.getElementById("age-yes").addEventListener("click", () => {
-    localStorage.setItem("velvet_age", "1");
+    localStorage.setItem("लव+_age", "1");
     ageGate.classList.add("hidden");
     app.style.display = "block";
     render();
@@ -662,7 +662,7 @@
       } else {
         favorites.push(id);
       }
-      localStorage.setItem("velvet_favs", JSON.stringify(favorites));
+      localStorage.setItem("लव+_favs", JSON.stringify(favorites));
       render();
       return;
     }
@@ -676,7 +676,7 @@
   });
 
   // Initial render if already aged
-  if (localStorage.getItem("velvet_age") === "1") {
+  if (localStorage.getItem(लव+_age") === "1") {
     render();
   }
 </script>
